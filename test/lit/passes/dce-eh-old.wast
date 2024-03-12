@@ -16,7 +16,7 @@
   (func $foo)
 
   ;; CHECK:      (func $try_unreachable (type $0)
-  ;; CHECK-NEXT:  (try $try
+  ;; CHECK-NEXT:  (try
   ;; CHECK-NEXT:   (do
   ;; CHECK-NEXT:    (unreachable)
   ;; CHECK-NEXT:   )
@@ -37,7 +37,7 @@
   )
 
   ;; CHECK:      (func $catch_unreachable (type $0)
-  ;; CHECK-NEXT:  (try $try
+  ;; CHECK-NEXT:  (try
   ;; CHECK-NEXT:   (do
   ;; CHECK-NEXT:    (nop)
   ;; CHECK-NEXT:   )
@@ -58,7 +58,7 @@
   )
 
   ;; CHECK:      (func $both_unreachable (type $0)
-  ;; CHECK-NEXT:  (try $try
+  ;; CHECK-NEXT:  (try
   ;; CHECK-NEXT:   (do
   ;; CHECK-NEXT:    (unreachable)
   ;; CHECK-NEXT:   )
@@ -106,15 +106,17 @@
   )
 
   ;; CHECK:      (func $rethrow (type $0)
-  ;; CHECK-NEXT:  (try $l0
-  ;; CHECK-NEXT:   (do
-  ;; CHECK-NEXT:    (nop)
-  ;; CHECK-NEXT:   )
-  ;; CHECK-NEXT:   (catch $e
-  ;; CHECK-NEXT:    (drop
-  ;; CHECK-NEXT:     (i32.const 0)
+  ;; CHECK-NEXT:  (block $l0
+  ;; CHECK-NEXT:   (try $__delegate__l0
+  ;; CHECK-NEXT:    (do
+  ;; CHECK-NEXT:     (nop)
   ;; CHECK-NEXT:    )
-  ;; CHECK-NEXT:    (rethrow $l0)
+  ;; CHECK-NEXT:    (catch $e
+  ;; CHECK-NEXT:     (drop
+  ;; CHECK-NEXT:      (i32.const 0)
+  ;; CHECK-NEXT:     )
+  ;; CHECK-NEXT:     (rethrow $__delegate__l0)
+  ;; CHECK-NEXT:    )
   ;; CHECK-NEXT:   )
   ;; CHECK-NEXT:  )
   ;; CHECK-NEXT: )
@@ -136,7 +138,7 @@
   ;; CHECK:      (func $call-pop-catch (type $0)
   ;; CHECK-NEXT:  (local $0 i32)
   ;; CHECK-NEXT:  (block $label
-  ;; CHECK-NEXT:   (try $try
+  ;; CHECK-NEXT:   (try
   ;; CHECK-NEXT:    (do
   ;; CHECK-NEXT:     (nop)
   ;; CHECK-NEXT:    )
