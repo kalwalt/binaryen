@@ -254,22 +254,20 @@
   )
 
   ;; CHECK:      (func $try-delegate (type $0) (result i32)
-  ;; CHECK-NEXT:  (block $l0 (result i32)
-  ;; CHECK-NEXT:   (try $__delegate__l0 (result i32)
-  ;; CHECK-NEXT:    (do
-  ;; CHECK-NEXT:     (try
-  ;; CHECK-NEXT:      (do
-  ;; CHECK-NEXT:       (i32.const 0)
-  ;; CHECK-NEXT:       (throw $e
-  ;; CHECK-NEXT:        (pop i32)
-  ;; CHECK-NEXT:       )
+  ;; CHECK-NEXT:  (try $l0 (result i32)
+  ;; CHECK-NEXT:   (do
+  ;; CHECK-NEXT:    (try
+  ;; CHECK-NEXT:     (do
+  ;; CHECK-NEXT:      (i32.const 0)
+  ;; CHECK-NEXT:      (throw $e
+  ;; CHECK-NEXT:       (pop i32)
   ;; CHECK-NEXT:      )
-  ;; CHECK-NEXT:      (delegate $__delegate__l0)
   ;; CHECK-NEXT:     )
-  ;; CHECK-NEXT:     (unreachable)
+  ;; CHECK-NEXT:     (delegate $l0)
   ;; CHECK-NEXT:    )
-  ;; CHECK-NEXT:    (catch $e
-  ;; CHECK-NEXT:    )
+  ;; CHECK-NEXT:    (unreachable)
+  ;; CHECK-NEXT:   )
+  ;; CHECK-NEXT:   (catch $e
   ;; CHECK-NEXT:   )
   ;; CHECK-NEXT:  )
   ;; CHECK-NEXT: )

@@ -179,16 +179,16 @@
   )
 
   ;; CHECK-TEXT:      (func $try-with-block-label (type $0)
-  ;; CHECK-TEXT-NEXT:  (block $l1
-  ;; CHECK-TEXT-NEXT:   (try
+  ;; CHECK-TEXT-NEXT:  (block $label
+  ;; CHECK-TEXT-NEXT:   (try $l1
   ;; CHECK-TEXT-NEXT:    (do
-  ;; CHECK-TEXT-NEXT:     (br $l1)
+  ;; CHECK-TEXT-NEXT:     (br $label)
   ;; CHECK-TEXT-NEXT:    )
   ;; CHECK-TEXT-NEXT:    (catch $e-i32
   ;; CHECK-TEXT-NEXT:     (drop
   ;; CHECK-TEXT-NEXT:      (pop i32)
   ;; CHECK-TEXT-NEXT:     )
-  ;; CHECK-TEXT-NEXT:     (br $l1)
+  ;; CHECK-TEXT-NEXT:     (br $label)
   ;; CHECK-TEXT-NEXT:    )
   ;; CHECK-TEXT-NEXT:   )
   ;; CHECK-TEXT-NEXT:  )
@@ -589,25 +589,23 @@
   )
 
   ;; CHECK-TEXT:      (func $inner-delegate-target-outer-catch (type $0)
-  ;; CHECK-TEXT-NEXT:  (block $l0
-  ;; CHECK-TEXT-NEXT:   (try $__delegate__l0
-  ;; CHECK-TEXT-NEXT:    (do
-  ;; CHECK-TEXT-NEXT:     (try
-  ;; CHECK-TEXT-NEXT:      (do
-  ;; CHECK-TEXT-NEXT:       (call $foo)
-  ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (delegate $__delegate__l0)
+  ;; CHECK-TEXT-NEXT:  (try $l0
+  ;; CHECK-TEXT-NEXT:   (do
+  ;; CHECK-TEXT-NEXT:    (try
+  ;; CHECK-TEXT-NEXT:     (do
+  ;; CHECK-TEXT-NEXT:      (call $foo)
   ;; CHECK-TEXT-NEXT:     )
-  ;; CHECK-TEXT-NEXT:     (try
-  ;; CHECK-TEXT-NEXT:      (do
-  ;; CHECK-TEXT-NEXT:       (call $foo)
-  ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (delegate $__delegate__l0)
+  ;; CHECK-TEXT-NEXT:     (delegate $l0)
+  ;; CHECK-TEXT-NEXT:    )
+  ;; CHECK-TEXT-NEXT:    (try
+  ;; CHECK-TEXT-NEXT:     (do
+  ;; CHECK-TEXT-NEXT:      (call $foo)
   ;; CHECK-TEXT-NEXT:     )
+  ;; CHECK-TEXT-NEXT:     (delegate $l0)
   ;; CHECK-TEXT-NEXT:    )
-  ;; CHECK-TEXT-NEXT:    (catch_all
-  ;; CHECK-TEXT-NEXT:     (nop)
-  ;; CHECK-TEXT-NEXT:    )
+  ;; CHECK-TEXT-NEXT:   )
+  ;; CHECK-TEXT-NEXT:   (catch_all
+  ;; CHECK-TEXT-NEXT:    (nop)
   ;; CHECK-TEXT-NEXT:   )
   ;; CHECK-TEXT-NEXT:  )
   ;; CHECK-TEXT-NEXT: )
@@ -655,24 +653,24 @@
   )
 
   ;; CHECK-TEXT:      (func $branch-and-delegate-target-same-try-label (type $0)
-  ;; CHECK-TEXT-NEXT:  (block $l0
-  ;; CHECK-TEXT-NEXT:   (try $__delegate__l0
+  ;; CHECK-TEXT-NEXT:  (block $label
+  ;; CHECK-TEXT-NEXT:   (try $l0
   ;; CHECK-TEXT-NEXT:    (do
   ;; CHECK-TEXT-NEXT:     (try
   ;; CHECK-TEXT-NEXT:      (do
-  ;; CHECK-TEXT-NEXT:       (br_if $l0
+  ;; CHECK-TEXT-NEXT:       (br_if $label
   ;; CHECK-TEXT-NEXT:        (i32.const 1)
   ;; CHECK-TEXT-NEXT:       )
   ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (delegate $__delegate__l0)
+  ;; CHECK-TEXT-NEXT:      (delegate $l0)
   ;; CHECK-TEXT-NEXT:     )
   ;; CHECK-TEXT-NEXT:     (try
   ;; CHECK-TEXT-NEXT:      (do
-  ;; CHECK-TEXT-NEXT:       (br_if $l0
+  ;; CHECK-TEXT-NEXT:       (br_if $label
   ;; CHECK-TEXT-NEXT:        (i32.const 1)
   ;; CHECK-TEXT-NEXT:       )
   ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (delegate $__delegate__l0)
+  ;; CHECK-TEXT-NEXT:      (delegate $l0)
   ;; CHECK-TEXT-NEXT:     )
   ;; CHECK-TEXT-NEXT:    )
   ;; CHECK-TEXT-NEXT:    (catch_all
@@ -736,18 +734,16 @@
   )
 
   ;; CHECK-TEXT:      (func $inner-delegate-target-outer-delegate (type $0)
-  ;; CHECK-TEXT-NEXT:  (block $l0
-  ;; CHECK-TEXT-NEXT:   (try $__delegate__l0
-  ;; CHECK-TEXT-NEXT:    (do
-  ;; CHECK-TEXT-NEXT:     (try
-  ;; CHECK-TEXT-NEXT:      (do
-  ;; CHECK-TEXT-NEXT:       (call $foo)
-  ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (delegate $__delegate__l0)
+  ;; CHECK-TEXT-NEXT:  (try $l0
+  ;; CHECK-TEXT-NEXT:   (do
+  ;; CHECK-TEXT-NEXT:    (try
+  ;; CHECK-TEXT-NEXT:     (do
+  ;; CHECK-TEXT-NEXT:      (call $foo)
   ;; CHECK-TEXT-NEXT:     )
+  ;; CHECK-TEXT-NEXT:     (delegate $l0)
   ;; CHECK-TEXT-NEXT:    )
-  ;; CHECK-TEXT-NEXT:    (delegate 1)
   ;; CHECK-TEXT-NEXT:   )
+  ;; CHECK-TEXT-NEXT:   (delegate 0)
   ;; CHECK-TEXT-NEXT:  )
   ;; CHECK-TEXT-NEXT: )
   ;; CHECK-BIN:      (func $inner-delegate-target-outer-delegate (type $0)
@@ -810,20 +806,18 @@
   )
 
   ;; CHECK-TEXT:      (func $try-catch-rethrow (type $0)
-  ;; CHECK-TEXT-NEXT:  (block $l0
-  ;; CHECK-TEXT-NEXT:   (try $__delegate__l0
-  ;; CHECK-TEXT-NEXT:    (do
-  ;; CHECK-TEXT-NEXT:     (call $foo)
+  ;; CHECK-TEXT-NEXT:  (try $l0
+  ;; CHECK-TEXT-NEXT:   (do
+  ;; CHECK-TEXT-NEXT:    (call $foo)
+  ;; CHECK-TEXT-NEXT:   )
+  ;; CHECK-TEXT-NEXT:   (catch $e-i32
+  ;; CHECK-TEXT-NEXT:    (drop
+  ;; CHECK-TEXT-NEXT:     (pop i32)
   ;; CHECK-TEXT-NEXT:    )
-  ;; CHECK-TEXT-NEXT:    (catch $e-i32
-  ;; CHECK-TEXT-NEXT:     (drop
-  ;; CHECK-TEXT-NEXT:      (pop i32)
-  ;; CHECK-TEXT-NEXT:     )
-  ;; CHECK-TEXT-NEXT:     (rethrow $__delegate__l0)
-  ;; CHECK-TEXT-NEXT:    )
-  ;; CHECK-TEXT-NEXT:    (catch_all
-  ;; CHECK-TEXT-NEXT:     (rethrow $__delegate__l0)
-  ;; CHECK-TEXT-NEXT:    )
+  ;; CHECK-TEXT-NEXT:    (rethrow $l0)
+  ;; CHECK-TEXT-NEXT:   )
+  ;; CHECK-TEXT-NEXT:   (catch_all
+  ;; CHECK-TEXT-NEXT:    (rethrow $l0)
   ;; CHECK-TEXT-NEXT:   )
   ;; CHECK-TEXT-NEXT:  )
   ;; CHECK-TEXT-NEXT: )
@@ -860,8 +854,8 @@
   )
 
   ;; CHECK-TEXT:      (func $branch-and-rethrow-target-same-try-label (type $0)
-  ;; CHECK-TEXT-NEXT:  (block $l0
-  ;; CHECK-TEXT-NEXT:   (try $__delegate__l0
+  ;; CHECK-TEXT-NEXT:  (block $label
+  ;; CHECK-TEXT-NEXT:   (try $l0
   ;; CHECK-TEXT-NEXT:    (do
   ;; CHECK-TEXT-NEXT:     (call $foo)
   ;; CHECK-TEXT-NEXT:    )
@@ -869,10 +863,10 @@
   ;; CHECK-TEXT-NEXT:     (drop
   ;; CHECK-TEXT-NEXT:      (pop i32)
   ;; CHECK-TEXT-NEXT:     )
-  ;; CHECK-TEXT-NEXT:     (rethrow $__delegate__l0)
+  ;; CHECK-TEXT-NEXT:     (rethrow $l0)
   ;; CHECK-TEXT-NEXT:    )
   ;; CHECK-TEXT-NEXT:    (catch_all
-  ;; CHECK-TEXT-NEXT:     (br $l0)
+  ;; CHECK-TEXT-NEXT:     (br $label)
   ;; CHECK-TEXT-NEXT:    )
   ;; CHECK-TEXT-NEXT:   )
   ;; CHECK-TEXT-NEXT:  )
@@ -916,25 +910,23 @@
   )
 
   ;; CHECK-TEXT:      (func $nested-rethrow (type $0)
-  ;; CHECK-TEXT-NEXT:  (block $l0
-  ;; CHECK-TEXT-NEXT:   (try $__delegate__l0
-  ;; CHECK-TEXT-NEXT:    (do
-  ;; CHECK-TEXT-NEXT:     (call $foo)
-  ;; CHECK-TEXT-NEXT:    )
-  ;; CHECK-TEXT-NEXT:    (catch_all
-  ;; CHECK-TEXT-NEXT:     (try
-  ;; CHECK-TEXT-NEXT:      (do
-  ;; CHECK-TEXT-NEXT:       (call $foo)
+  ;; CHECK-TEXT-NEXT:  (try $l0
+  ;; CHECK-TEXT-NEXT:   (do
+  ;; CHECK-TEXT-NEXT:    (call $foo)
+  ;; CHECK-TEXT-NEXT:   )
+  ;; CHECK-TEXT-NEXT:   (catch_all
+  ;; CHECK-TEXT-NEXT:    (try
+  ;; CHECK-TEXT-NEXT:     (do
+  ;; CHECK-TEXT-NEXT:      (call $foo)
+  ;; CHECK-TEXT-NEXT:     )
+  ;; CHECK-TEXT-NEXT:     (catch $e-i32
+  ;; CHECK-TEXT-NEXT:      (drop
+  ;; CHECK-TEXT-NEXT:       (pop i32)
   ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (catch $e-i32
-  ;; CHECK-TEXT-NEXT:       (drop
-  ;; CHECK-TEXT-NEXT:        (pop i32)
-  ;; CHECK-TEXT-NEXT:       )
-  ;; CHECK-TEXT-NEXT:       (rethrow $__delegate__l0)
-  ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (catch_all
-  ;; CHECK-TEXT-NEXT:       (rethrow $__delegate__l0)
-  ;; CHECK-TEXT-NEXT:      )
+  ;; CHECK-TEXT-NEXT:      (rethrow $l0)
+  ;; CHECK-TEXT-NEXT:     )
+  ;; CHECK-TEXT-NEXT:     (catch_all
+  ;; CHECK-TEXT-NEXT:      (rethrow $l0)
   ;; CHECK-TEXT-NEXT:     )
   ;; CHECK-TEXT-NEXT:    )
   ;; CHECK-TEXT-NEXT:   )
@@ -987,28 +979,26 @@
   )
 
   ;; CHECK-TEXT:      (func $rnested-rethrow-with-interleaving-block (type $0)
-  ;; CHECK-TEXT-NEXT:  (block $l0
-  ;; CHECK-TEXT-NEXT:   (try $__delegate__l0
-  ;; CHECK-TEXT-NEXT:    (do
-  ;; CHECK-TEXT-NEXT:     (call $foo)
-  ;; CHECK-TEXT-NEXT:    )
-  ;; CHECK-TEXT-NEXT:    (catch_all
-  ;; CHECK-TEXT-NEXT:     (try
-  ;; CHECK-TEXT-NEXT:      (do
-  ;; CHECK-TEXT-NEXT:       (call $foo)
+  ;; CHECK-TEXT-NEXT:  (try $l0
+  ;; CHECK-TEXT-NEXT:   (do
+  ;; CHECK-TEXT-NEXT:    (call $foo)
+  ;; CHECK-TEXT-NEXT:   )
+  ;; CHECK-TEXT-NEXT:   (catch_all
+  ;; CHECK-TEXT-NEXT:    (try
+  ;; CHECK-TEXT-NEXT:     (do
+  ;; CHECK-TEXT-NEXT:      (call $foo)
+  ;; CHECK-TEXT-NEXT:     )
+  ;; CHECK-TEXT-NEXT:     (catch $e-i32
+  ;; CHECK-TEXT-NEXT:      (drop
+  ;; CHECK-TEXT-NEXT:       (pop i32)
   ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (catch $e-i32
-  ;; CHECK-TEXT-NEXT:       (drop
-  ;; CHECK-TEXT-NEXT:        (pop i32)
-  ;; CHECK-TEXT-NEXT:       )
-  ;; CHECK-TEXT-NEXT:       (block $b0
-  ;; CHECK-TEXT-NEXT:        (rethrow $__delegate__l0)
-  ;; CHECK-TEXT-NEXT:       )
+  ;; CHECK-TEXT-NEXT:      (block $b0
+  ;; CHECK-TEXT-NEXT:       (rethrow $l0)
   ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (catch_all
-  ;; CHECK-TEXT-NEXT:       (block $b1
-  ;; CHECK-TEXT-NEXT:        (rethrow $__delegate__l0)
-  ;; CHECK-TEXT-NEXT:       )
+  ;; CHECK-TEXT-NEXT:     )
+  ;; CHECK-TEXT-NEXT:     (catch_all
+  ;; CHECK-TEXT-NEXT:      (block $b1
+  ;; CHECK-TEXT-NEXT:       (rethrow $l0)
   ;; CHECK-TEXT-NEXT:      )
   ;; CHECK-TEXT-NEXT:     )
   ;; CHECK-TEXT-NEXT:    )
@@ -1068,36 +1058,32 @@
   )
 
   ;; CHECK-TEXT:      (func $rethrow-within-nested-try-part (type $0)
-  ;; CHECK-TEXT-NEXT:  (block $l0
-  ;; CHECK-TEXT-NEXT:   (try $__delegate__l0
-  ;; CHECK-TEXT-NEXT:    (do
-  ;; CHECK-TEXT-NEXT:     (call $foo)
-  ;; CHECK-TEXT-NEXT:    )
-  ;; CHECK-TEXT-NEXT:    (catch_all
-  ;; CHECK-TEXT-NEXT:     (try
-  ;; CHECK-TEXT-NEXT:      (do
-  ;; CHECK-TEXT-NEXT:       (rethrow $__delegate__l0)
-  ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (catch_all
-  ;; CHECK-TEXT-NEXT:       (nop)
-  ;; CHECK-TEXT-NEXT:      )
+  ;; CHECK-TEXT-NEXT:  (try $l0
+  ;; CHECK-TEXT-NEXT:   (do
+  ;; CHECK-TEXT-NEXT:    (call $foo)
+  ;; CHECK-TEXT-NEXT:   )
+  ;; CHECK-TEXT-NEXT:   (catch_all
+  ;; CHECK-TEXT-NEXT:    (try
+  ;; CHECK-TEXT-NEXT:     (do
+  ;; CHECK-TEXT-NEXT:      (rethrow $l0)
+  ;; CHECK-TEXT-NEXT:     )
+  ;; CHECK-TEXT-NEXT:     (catch_all
+  ;; CHECK-TEXT-NEXT:      (nop)
   ;; CHECK-TEXT-NEXT:     )
   ;; CHECK-TEXT-NEXT:    )
   ;; CHECK-TEXT-NEXT:   )
   ;; CHECK-TEXT-NEXT:  )
-  ;; CHECK-TEXT-NEXT:  (block $l00
-  ;; CHECK-TEXT-NEXT:   (try $__delegate__l00
-  ;; CHECK-TEXT-NEXT:    (do
-  ;; CHECK-TEXT-NEXT:     (call $foo)
-  ;; CHECK-TEXT-NEXT:    )
-  ;; CHECK-TEXT-NEXT:    (catch_all
-  ;; CHECK-TEXT-NEXT:     (try
-  ;; CHECK-TEXT-NEXT:      (do
-  ;; CHECK-TEXT-NEXT:       (rethrow $__delegate__l00)
-  ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (catch_all
-  ;; CHECK-TEXT-NEXT:       (nop)
-  ;; CHECK-TEXT-NEXT:      )
+  ;; CHECK-TEXT-NEXT:  (try $l00
+  ;; CHECK-TEXT-NEXT:   (do
+  ;; CHECK-TEXT-NEXT:    (call $foo)
+  ;; CHECK-TEXT-NEXT:   )
+  ;; CHECK-TEXT-NEXT:   (catch_all
+  ;; CHECK-TEXT-NEXT:    (try
+  ;; CHECK-TEXT-NEXT:     (do
+  ;; CHECK-TEXT-NEXT:      (rethrow $l00)
+  ;; CHECK-TEXT-NEXT:     )
+  ;; CHECK-TEXT-NEXT:     (catch_all
+  ;; CHECK-TEXT-NEXT:      (nop)
   ;; CHECK-TEXT-NEXT:     )
   ;; CHECK-TEXT-NEXT:    )
   ;; CHECK-TEXT-NEXT:   )
@@ -1261,17 +1247,15 @@
   )
 
   ;; CHECK-TEXT:      (func $catchless-try-with-inner-delegate (type $0)
-  ;; CHECK-TEXT-NEXT:  (block $label$0
-  ;; CHECK-TEXT-NEXT:   (try $__delegate__label$0
-  ;; CHECK-TEXT-NEXT:    (do
-  ;; CHECK-TEXT-NEXT:     (try
-  ;; CHECK-TEXT-NEXT:      (do
-  ;; CHECK-TEXT-NEXT:       (throw $e-i32
-  ;; CHECK-TEXT-NEXT:        (i32.const 0)
-  ;; CHECK-TEXT-NEXT:       )
+  ;; CHECK-TEXT-NEXT:  (try $label$0
+  ;; CHECK-TEXT-NEXT:   (do
+  ;; CHECK-TEXT-NEXT:    (try
+  ;; CHECK-TEXT-NEXT:     (do
+  ;; CHECK-TEXT-NEXT:      (throw $e-i32
+  ;; CHECK-TEXT-NEXT:       (i32.const 0)
   ;; CHECK-TEXT-NEXT:      )
-  ;; CHECK-TEXT-NEXT:      (delegate $__delegate__label$0)
   ;; CHECK-TEXT-NEXT:     )
+  ;; CHECK-TEXT-NEXT:     (delegate $label$0)
   ;; CHECK-TEXT-NEXT:    )
   ;; CHECK-TEXT-NEXT:   )
   ;; CHECK-TEXT-NEXT:  )

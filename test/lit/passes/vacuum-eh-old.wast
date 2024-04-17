@@ -137,7 +137,7 @@
 
   ;; CHECK:      (func $try-delegate-outer-target (type $void)
   ;; CHECK-NEXT:  (local $0 i32)
-  ;; CHECK-NEXT:  (try $__delegate__label$0
+  ;; CHECK-NEXT:  (try $label$0
   ;; CHECK-NEXT:   (do
   ;; CHECK-NEXT:    (try
   ;; CHECK-NEXT:     (do
@@ -147,7 +147,7 @@
   ;; CHECK-NEXT:         (i32.const 0)
   ;; CHECK-NEXT:        )
   ;; CHECK-NEXT:       )
-  ;; CHECK-NEXT:       (delegate $__delegate__label$0)
+  ;; CHECK-NEXT:       (delegate $label$0)
   ;; CHECK-NEXT:      )
   ;; CHECK-NEXT:     )
   ;; CHECK-NEXT:     (catch_all

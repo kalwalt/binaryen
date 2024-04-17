@@ -173,16 +173,14 @@
   ;; CHECK-NEXT:   (local.set $x
   ;; CHECK-NEXT:    (i32.const 1)
   ;; CHECK-NEXT:   )
-  ;; CHECK-NEXT:   (block $l0
-  ;; CHECK-NEXT:    (try $__delegate__l0
-  ;; CHECK-NEXT:     (do
-  ;; CHECK-NEXT:      (throw $e
-  ;; CHECK-NEXT:       (i32.const 0)
-  ;; CHECK-NEXT:      )
+  ;; CHECK-NEXT:   (try $l0
+  ;; CHECK-NEXT:    (do
+  ;; CHECK-NEXT:     (throw $e
+  ;; CHECK-NEXT:      (i32.const 0)
   ;; CHECK-NEXT:     )
-  ;; CHECK-NEXT:     (catch_all
-  ;; CHECK-NEXT:      (rethrow $__delegate__l0)
-  ;; CHECK-NEXT:     )
+  ;; CHECK-NEXT:    )
+  ;; CHECK-NEXT:    (catch_all
+  ;; CHECK-NEXT:     (rethrow $l0)
   ;; CHECK-NEXT:    )
   ;; CHECK-NEXT:   )
   ;; CHECK-NEXT:   (drop
@@ -219,21 +217,19 @@
   ;; CHECK:      (func $can-push-past-try-delegate (type $0)
   ;; CHECK-NEXT:  (local $x i32)
   ;; CHECK-NEXT:  (block $out
-  ;; CHECK-NEXT:   (block $l
-  ;; CHECK-NEXT:    (try $__delegate__l
-  ;; CHECK-NEXT:     (do
-  ;; CHECK-NEXT:      (try
-  ;; CHECK-NEXT:       (do
-  ;; CHECK-NEXT:        (throw $e
-  ;; CHECK-NEXT:         (i32.const 0)
-  ;; CHECK-NEXT:        )
+  ;; CHECK-NEXT:   (try $l
+  ;; CHECK-NEXT:    (do
+  ;; CHECK-NEXT:     (try
+  ;; CHECK-NEXT:      (do
+  ;; CHECK-NEXT:       (throw $e
+  ;; CHECK-NEXT:        (i32.const 0)
   ;; CHECK-NEXT:       )
-  ;; CHECK-NEXT:       (delegate $__delegate__l)
   ;; CHECK-NEXT:      )
+  ;; CHECK-NEXT:      (delegate $l)
   ;; CHECK-NEXT:     )
-  ;; CHECK-NEXT:     (catch_all
-  ;; CHECK-NEXT:      (nop)
-  ;; CHECK-NEXT:     )
+  ;; CHECK-NEXT:    )
+  ;; CHECK-NEXT:    (catch_all
+  ;; CHECK-NEXT:     (nop)
   ;; CHECK-NEXT:    )
   ;; CHECK-NEXT:   )
   ;; CHECK-NEXT:   (drop
@@ -279,21 +275,19 @@
   ;; CHECK-NEXT:   (local.set $x
   ;; CHECK-NEXT:    (i32.const 1)
   ;; CHECK-NEXT:   )
-  ;; CHECK-NEXT:   (block $l
-  ;; CHECK-NEXT:    (try
-  ;; CHECK-NEXT:     (do
-  ;; CHECK-NEXT:      (try
-  ;; CHECK-NEXT:       (do
-  ;; CHECK-NEXT:        (throw $e
-  ;; CHECK-NEXT:         (i32.const 0)
-  ;; CHECK-NEXT:        )
+  ;; CHECK-NEXT:   (try $l
+  ;; CHECK-NEXT:    (do
+  ;; CHECK-NEXT:     (try
+  ;; CHECK-NEXT:      (do
+  ;; CHECK-NEXT:       (throw $e
+  ;; CHECK-NEXT:        (i32.const 0)
   ;; CHECK-NEXT:       )
-  ;; CHECK-NEXT:       (delegate 3)
   ;; CHECK-NEXT:      )
+  ;; CHECK-NEXT:      (delegate 2)
   ;; CHECK-NEXT:     )
-  ;; CHECK-NEXT:     (catch_all
-  ;; CHECK-NEXT:      (nop)
-  ;; CHECK-NEXT:     )
+  ;; CHECK-NEXT:    )
+  ;; CHECK-NEXT:    (catch_all
+  ;; CHECK-NEXT:     (nop)
   ;; CHECK-NEXT:    )
   ;; CHECK-NEXT:   )
   ;; CHECK-NEXT:   (drop
